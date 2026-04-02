@@ -665,10 +665,10 @@ void At86rf215::transmitMorseCode(Transceiver transceiver, Error& err, float wpm
 
 void At86rf215::transmitMorseCodeEnhanced(Transceiver transceiver, Error& err, float wpm, const char* sequence, uint16_t sequenceLen, bool spi_dma_active) {
     if (COMMSParameters::COMMS_TVAC_ACTIVE) {
-        vTaskDelay(pdMS_TO_TICKS(1000 * COMMSParameters::COMMS_CW_ACTIVE_SEC));
-        At86rf215::turnOffUHFTXAmp();
+        vTaskDelay(pdMS_TO_TICKS(1000 * COMMSParameters::COMMS_CW_TVAC_ACTIVE_SEC));
+        turnOffUHFTXAmp();
         LOG_DEBUG << "[TX CW] FAKE ENDED";
-        err = AT86RF215::NO_ERRORS;
+        err = NO_ERRORS;
         return;
     }
     RegisterAddress iqfc0_reg = RF_IQIFC0;

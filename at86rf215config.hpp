@@ -1,8 +1,9 @@
 #pragma once
+#include "PlatformParameters.hpp"
 #include "at86rf215definitions.hpp"
 #include <etl/binary.h>
 #include <etl/array.h>
-
+#define FINAL_FLASH_RF_POWER
 namespace AT86RF215 {
 
     struct RXConfig {
@@ -104,19 +105,26 @@ namespace AT86RF215 {
         /// RFn_PAC
         PowerAmplifierCurrentControl powerAmplifierCurrentControl09, powerAmplifierCurrentControl24;
         uint8_t txOutPower09, txOutPower24;
-
         static TXConfig DefaultTXConfig() {
             return {
                 /// RFn_TXDFE
                 .txRelativeCutoffFrequency09 = TxRelativeCutoffFrequency::FCUT_0375,
                 .directModulation09 = Direct_Mod_Enable_FSKDM::direct_mod_enabled,
                 .transceiverSampleRate09 = TransmitterSampleRate::FS_400,
+
                 /// RFn_TXCUTC
                 .powerAmplifierRampTime09 = PowerAmplifierRampTime::RF_PARAMP32U,
                 .transmitterCutOffFrequency09 = TransmitterCutOffFrequency::RF_FLC500KHZ,
+
                 /// RF_n_PAC
                 .powerAmplifierCurrentControl09 = PowerAmplifierCurrentControl::PA_NO,
-                .txOutPower09 = 28};
+
+        #if defined(FINAL_FLASH_RF_POWER)
+                .txOutPower09 = COMMSParameters::COMMS_MAX_RF_TX_POWER,
+        #else
+                .txOutPower09 = COMMSParameters::COMMS_SAFE_RF_TX_POWER,
+        #endif
+            };
         }
         void setTXDFE(TxRelativeCutoffFrequency cutoffFrequency09, Direct_Mod_Enable_FSKDM modulation09, TransmitterSampleRate sampleRate09) {
             txRelativeCutoffFrequency09 = cutoffFrequency09;

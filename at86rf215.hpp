@@ -194,8 +194,8 @@ public:
         /// Flag for checking whether the AGC is locked
         bool agc_held;
         SPI_HandleTypeDef* hspi;
-        uint32_t rx_frequency_ = 401000;
-        uint32_t tx_frequency_ = 401000;
+        uint32_t rx_frequency_ = COMMSParameters::COMMS_RF_RX_FREQUENCY;
+        uint32_t tx_frequency_ = COMMSParameters::COMMS_RF_TX_FREQUENCY;
 
         transceiverHealth status = INIT;
 
